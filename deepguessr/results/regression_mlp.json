@@ -1,0 +1,56 @@
+{
+  "run_name": "regression_mlp",
+  "metrics": {
+    "n": 5000,
+    "median_km": 1989.5762021933674,
+    "mean_km": 3484.4671299502274,
+    "acc@25km": 0.0006,
+    "acc@200km": 0.0208,
+    "acc@750km": 0.206,
+    "acc@2500km": 0.5696,
+    "country_acc": 0.2924
+  },
+  "seed": 42,
+  "git_hash": "bf08a825f6e02e6387b858d55b2386dbafa9e9d0",
+  "clip": {
+    "model": "ViT-B-16-quickgelu",
+    "pretrained": "openai",
+    "image_size": 224,
+    "batch_size": 128,
+    "num_workers": 4
+  },
+  "per_continent": {
+    "Africa": {
+      "n": 862,
+      "median_km": 3785.9756767951603,
+      "country_acc": 0.03248259860788863
+    },
+    "Asia": {
+      "n": 1112,
+      "median_km": 2125.7761454886795,
+      "country_acc": 0.15827338129496402
+    },
+    "Europe": {
+      "n": 954,
+      "median_km": 1035.3003615569705,
+      "country_acc": 0.2830188679245283
+    },
+    "North America": {
+      "n": 1084,
+      "median_km": 1119.6699115026418,
+      "country_acc": 0.551660516605166
+    },
+    "Oceania": {
+      "n": 421,
+      "median_km": 1871.636480303953,
+      "country_acc": 0.6555819477434679
+    },
+    "South America": {
+      "n": 567,
+      "median_km": 5120.215729005334,
+      "country_acc": 0.20105820105820105
+    }
+  },
+  "selected_on_val": true,
+  "loss": "haversine"
+}

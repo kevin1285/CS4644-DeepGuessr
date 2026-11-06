@@ -1,0 +1,54 @@
+{
+  "run_name": "sanity_train_mean",
+  "metrics": {
+    "n": 5000,
+    "median_km": 6889.505132919081,
+    "mean_km": 7408.313322960252,
+    "acc@25km": 0.0,
+    "acc@200km": 0.0004,
+    "acc@750km": 0.007,
+    "acc@2500km": 0.0738,
+    "country_acc": 0.0064
+  },
+  "seed": 42,
+  "git_hash": "bf08a825f6e02e6387b858d55b2386dbafa9e9d0",
+  "clip": {
+    "model": "ViT-B-16-quickgelu",
+    "pretrained": "openai",
+    "image_size": 224,
+    "batch_size": 128,
+    "num_workers": 4
+  },
+  "per_continent": {
+    "Africa": {
+      "n": 862,
+      "median_km": 8101.962321907591,
+      "country_acc": 0.0
+    },
+    "Asia": {
+      "n": 1112,
+      "median_km": 8202.871770551512,
+      "country_acc": 0.0
+    },
+    "Europe": {
+      "n": 954,
+      "median_km": 2862.6703918900903,
+      "country_acc": 0.033542976939203356
+    },
+    "North America": {
+      "n": 1084,
+      "median_km": 5726.185696961225,
+      "country_acc": 0.0
+    },
+    "Oceania": {
+      "n": 421,
+      "median_km": 15683.033753202266,
+      "country_acc": 0.0
+    },
+    "South America": {
+      "n": 567,
+      "median_km": 9769.049310467704,
+      "country_acc": 0.0
+    }
+  }
+}

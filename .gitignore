@@ -5,10 +5,10 @@ __pycache__/
 .pytest_cache/
 .coverage
 
-# Project data & generated artifacts
+# Project data (large, reproducible) — keep ignored
 deepguessr/data/
-deepguessr/results/
-deepguessr/figures/
+
+# NOTE: results/ and figures/ are intentionally committed (report deliverables)
 
 # OS
 .DS_Store

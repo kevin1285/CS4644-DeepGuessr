@@ -1,0 +1,22 @@
+{
+  "run_name": "sanity_common_country",
+  "metrics": {
+    "n": 5000,
+    "median_km": 9068.929935323333,
+    "mean_km": 8797.456510925147,
+    "acc@25km": 0.0,
+    "acc@200km": 0.001,
+    "acc@750km": 0.029,
+    "acc@2500km": 0.1662,
+    "country_acc": 0.1186
+  },
+  "seed": 42,
+  "git_hash": "bf08a825f6e02e6387b858d55b2386dbafa9e9d0",
+  "clip": {
+    "model": "ViT-B-16-quickgelu",
+    "pretrained": "openai",
+    "image_size": 224,
+    "batch_size": 128,
+    "num_workers": 4
+  }
+}
