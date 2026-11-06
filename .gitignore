@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# Project data & generated artifacts
+deepguessr/data/
+deepguessr/results/
+deepguessr/figures/
+
+# OS
+.DS_Store

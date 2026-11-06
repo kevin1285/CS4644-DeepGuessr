@@ -1,0 +1,70 @@
+# DeepGuessr config — baselines on Apple Silicon (M-series)
+# All paths are relative to the repo root unless absolute.
+
+seed: 42
+device: mps            # mps | cuda | cpu
+
+paths:
+  data_dir: deepguessr/data
+  results_dir: deepguessr/results
+  figures_dir: deepguessr/figures
+  raw_dir: deepguessr/data/raw          # downloaded shards + extracted images
+  images_dir: deepguessr/data/images    # unzipped {id}.jpg live here (train/ test/)
+
+dataset:
+  repo_id: osv5m/osv5m
+  repo_type: dataset
+  id_col: id
+  lat_col: latitude
+  lon_col: longitude
+  country_col: country
+
+download:
+  # Keep the laptop run small. Scale up later on ICE/Colab.
+  train_shards: [0]           # ~2.5 GB zip; contains plenty of images for baselines
+  test_shards: [0]            # one test shard (~2.25 GB)
+  target_train_images: 20000  # cap after unzip (seeded sample)
+  test_subset_size: 5000      # fixed seeded test subset used by EVERY model
+
+subsets:
+  val_frac: 0.05              # val = 5% of downloaded train (seeded)
+
+clip:
+  model: ViT-B-16-quickgelu   # quickgelu matches OpenAI pretrained weights
+  pretrained: openai
+  image_size: 224
+  batch_size: 128
+  num_workers: 4
+
+regression:
+  hidden: 512
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  batch_size: 1024
+  epochs: 30
+  loss: haversine            # haversine | unitvec_mse
+
+zeroshot:
+  prompt_templates:
+    - "a street view photo in {country}."
+    - "a photo taken in {country}."
+    - "a Google Street View image from {country}."
+    - "a street in {country}."
+
+metrics:
+  thresholds_km: [25, 200, 750, 2500]
+
+geocells:
+  tag: default
+  max_per_cell: 500
+  min_per_cell: 30
+  min_cell_side: 0.5          # degrees; stop splitting below this
+
+geocell_head:
+  arch: linear                # linear | mlp
+  hidden: 1024
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  batch_size: 1024
+  epochs: 30
+  tau_km: 75                  # smoothing temperature for smoothed labels
