@@ -177,6 +177,12 @@ def main() -> None:
           f"cell_acc={m['cell_acc']:.3f} top5={m['top5_cell_acc']:.3f}")
 
     pd.DataFrame(log).to_csv(results_dir / f"{run_name}_curve.csv", index=False)
+
+    # Persist the trained head so LoRA fine-tuning can warm-start from it.
+    head_path = Path(cfg["paths"]["data_dir"]) / f"frozen_head_{arch}_{suffix}.pt"
+    torch.save(head.state_dict(), head_path)
+    print(f"Saved frozen head -> {head_path}")
+
     preds = pd.DataFrame({
         "id": test["id"], "gt_lat": gt_lat, "gt_lon": gt_lon,
         "pred_lat": plat, "pred_lon": plon, "gt_country": gt_country,

@@ -75,6 +75,9 @@ lora:
   alpha: 32
   dropout: 0.1
   target_modules: [q_proj, v_proj]
+  head_arch: mlp             # mlp | linear  (match the best frozen head)
+  head_hidden: 1024
+  warm_start: true           # load the frozen head weights if available
   train_images: 100000        # scale to fit the time budget (handoff: 100k-200k)
   epochs: 3
   batch_size: 128

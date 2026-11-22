@@ -122,25 +122,31 @@ def count_trainable(model):
     return t, tot
 
 
-def warm_start_head(model, cfg, data_dir, arch, labels, tau, K):
+def warm_start_head(model, data_dir, arch, labels, tau):
     """Load the best frozen geocell head weights into the LoRA model's head.
 
-    The frozen linear head was `nn.Linear(512, K)` in train_geocell_head.py
-    (attr `.fc`). We retrain the frozen head quickly here only if a saved
-    state isn't found, otherwise we skip (the frozen script does not persist
-    weights by default). This function is best-effort: it looks for an
-    optional cached head file and warm-starts if present.
+    The frozen script (train_geocell_head.py) saves its head as
+    data/frozen_head_{arch}_{suffix}.pt. The frozen head module layout matches
+    this model's head (linear: nn.Linear with keys weight/bias via .fc; mlp:
+    nn.Sequential net.0/net.2). We remap the linear 'fc.' prefix when needed.
     """
     suffix = "onehot" if labels == "onehot" else f"smooth_tau{int(tau)}"
     head_path = data_dir / f"frozen_head_{arch}_{suffix}.pt"
-    if head_path.exists() and isinstance(model.head, nn.Linear):
-        sd = torch.load(head_path, map_location="cpu")
+    if not head_path.exists():
+        print(f"No cached frozen head at {head_path}; head starts random-init.")
+        return False
+    sd = torch.load(head_path, map_location="cpu")
+    # Frozen linear head stores keys as 'fc.weight'/'fc.bias'; our linear head
+    # is a bare nn.Linear with 'weight'/'bias'. Strip the 'fc.' prefix.
+    if arch == "linear":
+        sd = {k.replace("fc.", ""): v for k, v in sd.items()}
+    try:
         model.head.load_state_dict(sd)
-        print(f"Warm-started head from {head_path}")
+        print(f"Warm-started {arch} head from {head_path}")
         return True
-    print("No cached frozen head found; head starts from random init "
-          f"(expected at {head_path}).")
-    return False
+    except Exception as e:
+        print(f"Warm-start failed ({e}); head starts random-init.")
+        return False
 
 
 # --------------------------------------------------------------------------
@@ -198,13 +204,16 @@ def main() -> None:
         target_modules=lc["target_modules"], bias="none",
     )
     vision = get_peft_model(vision, lora_cfg)
-    model = LoRAGeoModel(vision, K).to(device)
+    head_arch = lc.get("head_arch", "mlp")
+    hidden = lc.get("head_hidden", 1024) if head_arch == "mlp" else 0
+    model = LoRAGeoModel(vision, K, hidden=hidden).to(device)
 
-    warm_start_head(model, cfg, data_dir, "linear", labels, tau, K)
+    if lc.get("warm_start", True):
+        warm_start_head(model, data_dir, head_arch, labels, tau)
 
     trainable, total = count_trainable(model)
     print(f"K={K} labels={labels}" + (f" tau={tau}" if labels == "smooth" else "")
-          + f" epochs={epochs} train_images={len(train)} device={device}")
+          + f" head={head_arch} epochs={epochs} train_images={len(train)} device={device}")
     print(f"Trainable params: {trainable:,} / {total:,} "
           f"({100 * trainable / total:.2f}%)")
 
