@@ -41,10 +41,17 @@ def set_seed(seed: int) -> None:
 def get_device(requested: str = "mps") -> str:
     import torch
 
-    if requested == "mps" and torch.backends.mps.is_available():
-        return "mps"
+    # Honor the explicit request if that device is actually available.
     if requested == "cuda" and torch.cuda.is_available():
         return "cuda"
+    if requested == "mps" and torch.backends.mps.is_available():
+        return "mps"
+    # Requested device unavailable (e.g. config says 'mps' but we're on an ICE
+    # CUDA box): fall back to the best accelerator present, not CPU.
+    if torch.cuda.is_available():
+        return "cuda"
+    if torch.backends.mps.is_available():
+        return "mps"
     return "cpu"
 
 
