@@ -1,0 +1,73 @@
+{
+  "run_name": "lora_geocell_smooth_tau75",
+  "metrics": {
+    "n": 5000,
+    "median_km": 1219.749927594533,
+    "mean_km": 3210.82005794448,
+    "acc@25km": 0.0004,
+    "acc@200km": 0.0538,
+    "acc@750km": 0.3492,
+    "acc@2500km": 0.6818,
+    "country_acc": 0.3892,
+    "cell_acc": 0.387,
+    "trainable_params": 1206361
+  },
+  "seed": 42,
+  "git_hash": "f8125438f9e906205ccc6b5a96c2181b52fbbe8e",
+  "clip": {
+    "model": "ViT-B-16-quickgelu",
+    "pretrained": "openai",
+    "image_size": 224,
+    "batch_size": 128,
+    "num_workers": 4
+  },
+  "per_continent": {
+    "Africa": {
+      "n": 862,
+      "median_km": 2249.498765976427,
+      "country_acc": 0.10440835266821345
+    },
+    "Asia": {
+      "n": 1112,
+      "median_km": 1510.960983874306,
+      "country_acc": 0.2922661870503597
+    },
+    "Europe": {
+      "n": 954,
+      "median_km": 810.6437380981188,
+      "country_acc": 0.3490566037735849
+    },
+    "North America": {
+      "n": 1084,
+      "median_km": 775.2005696155674,
+      "country_acc": 0.6392988929889298
+    },
+    "Oceania": {
+      "n": 421,
+      "median_km": 1375.6985883436912,
+      "country_acc": 0.7387173396674585
+    },
+    "South America": {
+      "n": 567,
+      "median_km": 2896.4703248091914,
+      "country_acc": 0.3421516754850088
+    }
+  },
+  "K": 89,
+  "labels": "smooth",
+  "tau_km": 75.0,
+  "lora": {
+    "rank": 16,
+    "alpha": 32,
+    "dropout": 0.1,
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "train_images": 19000,
+    "epochs": 8,
+    "lr_lora": 0.0001,
+    "lr_head": 0.001,
+    "no_hflip": true
+  }
+}

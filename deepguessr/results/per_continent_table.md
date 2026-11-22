@@ -11,6 +11,7 @@
 | Geocell linear (smooth tau=75) | 7302 | 1948 | 1339 | 1113 | 1928 | 10004 |
 | Geocell MLP (one-hot) | 3005 | 1674 | 861 | 801 | 1598 | 4965 |
 | Geocell MLP (smooth tau=75) | 2822 | 1594 | 835 | 810 | 1531 | 4895 |
+| LoRA geocell MLP (smooth tau=75) | 2249 | 1511 | 811 | 775 | 1376 | 2896 |
 
 ## Per-continent country accuracy (↑)
 
@@ -25,3 +26,4 @@
 | Geocell linear (smooth tau=75) | 6.1 | 13.0 | 14.7 | 51.8 | 68.6 | 14.3 |
 | Geocell MLP (one-hot) | 9.5 | 26.8 | 32.8 | 60.9 | 71.7 | 27.2 |
 | Geocell MLP (smooth tau=75) | 10.0 | 25.0 | 34.8 | 60.8 | 72.4 | 27.0 |
+| LoRA geocell MLP (smooth tau=75) | 10.4 | 29.2 | 34.9 | 63.9 | 73.9 | 34.2 |

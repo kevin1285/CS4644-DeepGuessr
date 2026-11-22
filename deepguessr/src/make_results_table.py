@@ -20,6 +20,7 @@ ROW_ORDER = [
     ("geocell_linear_smooth_tau75", "Geocell linear (smooth tau=75)"),
     ("geocell_mlp_onehot", "Geocell MLP (one-hot)"),
     ("geocell_mlp_smooth_tau75", "Geocell MLP (smooth tau=75)"),
+    ("lora_geocell_smooth_tau75", "LoRA geocell MLP (smooth tau=75)"),
 ]
 
 # (metric key, header, kind) where kind in {"km","pct"} and arrow direction.

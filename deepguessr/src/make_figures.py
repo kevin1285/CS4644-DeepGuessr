@@ -32,6 +32,7 @@ MODELS = [
     ("regression_mlp", "Regression (MLP)"),
     ("geocell_mlp_onehot", "Geocell MLP (one-hot)"),
     ("geocell_mlp_smooth_tau75", "Geocell MLP (smooth)"),
+    ("lora_geocell_smooth_tau75", "LoRA geocell (smooth)"),
     ("sanity_train_mean", "Train-mean"),
 ]
 
@@ -103,7 +104,8 @@ def fig_training_curves(results_dir, figures_dir):
     curves = [("regression_linear_curve.csv", "Regression (linear)", "train_loss_km"),
               ("regression_mlp_curve.csv", "Regression (MLP)", "train_loss_km"),
               ("geocell_mlp_onehot_curve.csv", "Geocell MLP (one-hot)", "train_loss"),
-              ("geocell_mlp_smooth_tau75_curve.csv", "Geocell MLP (smooth)", "train_loss")]
+              ("geocell_mlp_smooth_tau75_curve.csv", "Geocell MLP (smooth)", "train_loss"),
+              ("lora_geocell_smooth_tau75_curve.csv", "LoRA geocell (smooth)", "train_loss")]
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     for fname, label, loss_col in curves:
         p = results_dir / fname
@@ -123,7 +125,8 @@ def fig_training_curves(results_dir, figures_dir):
 def fig_prediction_map(results_dir, figures_dir, n=300, seed=42):
     runs = [("zeroshot_ensemble", "Zero-shot (ensemble)"),
             ("regression_mlp", "Regression (MLP)"),
-            ("geocell_mlp_smooth_tau75", "Geocell MLP (smooth)")]
+            ("geocell_mlp_smooth_tau75", "Geocell MLP (smooth)"),
+            ("lora_geocell_smooth_tau75", "LoRA geocell (smooth)")]
     runs = [r for r in runs if (results_dir / f"{r[0]}_preds.csv").exists()]
     fig, axes = plt.subplots(1, len(runs), figsize=(8 * len(runs), 6))
     if len(runs) == 1:
