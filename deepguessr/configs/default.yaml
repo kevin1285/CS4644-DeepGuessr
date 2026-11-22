@@ -20,11 +20,12 @@ dataset:
   country_col: country
 
 download:
-  # Keep the laptop run small. Scale up later on ICE/Colab.
-  train_shards: [0]           # ~2.5 GB zip; contains plenty of images for baselines
+  # Final (ICE) scale. Each shard ~2.5 GB zipped; 4 shards ~ 200k raw images.
+  train_shards: [0, 1, 2, 3]  # ~10 GB zips -> re-unzip in scratch
   test_shards: [0]            # one test shard (~2.25 GB)
-  target_train_images: 20000  # cap after unzip (seeded sample)
-  test_subset_size: 5000      # fixed seeded test subset used by EVERY model
+  target_train_images: 100000 # cap after unzip (seeded sample)
+  test_subset_size: 10000     # fixed seeded test subset used by EVERY model
+  delete_zip_after_unzip: true  # save scratch space at scale
 
 subsets:
   val_frac: 0.05              # val = 5% of downloaded train (seeded)

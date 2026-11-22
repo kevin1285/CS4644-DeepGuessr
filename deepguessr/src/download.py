@@ -70,6 +70,13 @@ def main() -> None:
             print(f"[{split}] shard {shard:02d}: unzipping ...")
             n = unzip_shard(zip_path, out_dir)
             print(f"[{split}] shard {shard:02d}: wrote {n} new images")
+            # Optional: delete the zip after unzipping to save scratch space.
+            if dl.get("delete_zip_after_unzip", False):
+                try:
+                    zip_path.unlink()
+                    print(f"[{split}] shard {shard:02d}: removed zip")
+                except OSError:
+                    pass
 
     n_train = len(list((images_dir / "train").glob("*.jpg")))
     n_test = len(list((images_dir / "test").glob("*.jpg")))
