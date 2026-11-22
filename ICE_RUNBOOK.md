@@ -45,30 +45,56 @@ The real GPU check happens in the job (step 6).
 
 ## 4. Get the data onto ICE
 
-The training reads images, so the dataset must be on ICE. Two options:
+The training reads images, so the dataset must be on ICE (~8+ GB downloaded).
 
-**Option A — download directly on ICE (simplest).** From the repo root:
+> **Activate the env in every new session first.** `conda` is only available
+> after loading the module. If you see `conda: command not found`, run:
+> ```bash
+> module load anaconda3/2023.03
+> conda activate deepguessr
+> ```
+
+### 4a. Point the data dir at SCRATCH before downloading (REQUIRED)
+Your home directory (`/home/hice1/<user>`) has a small quota (~10-15 GB) and the
+dataset will overflow it (`OSError: [Errno 122] Disk quota exceeded`). Put the
+data in **scratch** first. From the repo root:
 ```bash
-conda activate deepguessr
-python deepguessr/src/download.py        # downloads + unzips shards
+# confirm your scratch path exists (usually ~/scratch)
+ls -ld ~/scratch
+
+rm -rf deepguessr/data                      # remove any partial/overflowed download
+mkdir -p ~/scratch/dg_data
+ln -s ~/scratch/dg_data deepguessr/data     # symlink data/ -> scratch
+ls -l deepguessr/data                       # should show '-> .../scratch/dg_data'
+```
+If `~/scratch` doesn't exist, find it with `ls ~ | grep -i scratch` and adjust.
+
+### 4b. Clear any expired HuggingFace token (REQUIRED if you hit a 401)
+The OSV-5M dataset is **public** and needs no token. But a leftover/expired token
+in your account causes `401 Unauthorized` / `Repository Not Found`. If you see
+that (look for a line like `User Access Token "..." is expired`), clear it:
+```bash
+hf auth logout        # or: huggingface-cli logout
+rm -f ~/.cache/huggingface/token
+```
+Do NOT log in again — anonymous access is correct for this public dataset.
+
+### 4c. Download + build
+```bash
+python deepguessr/src/download.py        # downloads + unzips shards into scratch
 python deepguessr/src/build_subsets.py   # builds train/val/test CSVs
-python deepguessr/src/geocells.py        # builds the K=89 geocells + assignments
+python deepguessr/src/geocells.py        # builds K=89 geocells + assignments
 ```
-Put large data in scratch, not home (home quota is small). If your home fills up,
-move `deepguessr/data/` to your scratch dir and symlink it back:
-```bash
-# find your scratch path (varies); commonly ~/scratch
-mv deepguessr/data ~/scratch/dg_data && ln -s ~/scratch/dg_data deepguessr/data
-```
+The download prints "unauthenticated requests" warnings — that's expected and
+fine. It is resumable; if interrupted, just re-run it.
 
-**Option B — copy from your laptop** (only the CSVs + geocells + a data subset;
-images are large). From your LAPTOP terminal:
+**Alternative — copy prebuilt CSVs/geocells from your laptop** (still need images
+on ICE, so this only saves the build steps). From your LAPTOP terminal:
 ```bash
-scp -r deepguessr/data/*.csv deepguessr/data/geocells_default.json \
+scp deepguessr/data/*.csv deepguessr/data/geocells_default.json \
     deepguessr/data/cell_assign_*.npy \
-    <your_gt_username>@login-ice.pace.gatech.edu:~/CS4644-DeepGuessr/deepguessr/data/
+    <your_gt_username>@login-ice.pace.gatech.edu:~/scratch/dg_data/
 ```
-(You still need the images on ICE for LoRA, so Option A is usually easier.)
 
 ## 5. Check what GPU partition you can use
 
@@ -142,6 +168,36 @@ Then regenerate the table + figures locally:
 One LoRA run should take ≤ ~6 hours (the `--time=06:00:00` limit). After you see
 the img/s throughput in the log, pick `--train-images` × `--epochs` to fit.
 Handoff rule: if throughput is low, cut to 100k images × 3 epochs first.
+
+---
+
+## Troubleshooting (real issues seen)
+
+**`ssh ... Operation timed out`** — you're off the GT network. Connect the GT
+VPN (GlobalProtect, `vpn.gatech.edu`) first, then ssh again.
+
+**`git clone` → `Authentication failed` / `Password authentication is not
+supported`** — if the repo is private, use a GitHub Personal Access Token (not
+your password) as the password. If public, the clone needs no auth.
+
+**`conda: command not found`** — new session hasn't loaded the module. Run
+`module load anaconda3/2023.03 && conda activate deepguessr`. Needed every
+session (the Slurm script does this itself).
+
+**`cuda available: False` during setup** — expected on the login node (no GPU).
+CUDA is only available inside the Slurm job on a compute node.
+
+**`401 Unauthorized` / `Repository Not Found` on download** — an expired HF token
+in your account. Clear it: `hf auth logout` and
+`rm -f ~/.cache/huggingface/token`. The dataset is public; don't log back in.
+
+**`OSError: [Errno 122] Disk quota exceeded`** — home directory is full. The data
+must live in scratch. Do step 4a (symlink `deepguessr/data` -> `~/scratch/dg_data`)
+and re-run the download.
+
+**`sbatch` job stuck pending (PD) forever** — you may be missing a required
+`--partition`/`--account` line. Check `sinfo -o "%P %G"` and add the partition to
+`scripts/train_lora.sbatch`.
 
 ## If ICE is painful (queue waits, module issues) near the deadline
 Fall back to Colab Pro — ask the agent for the Colab notebook. You only need ONE

@@ -2,13 +2,15 @@
 #SBATCH --job-name=dg_lora
 #SBATCH --output=logs/dg_lora_%j.out
 #SBATCH --error=logs/dg_lora_%j.err
-#SBATCH --gres=gpu:1
+#SBATCH --partition=ice-gpu
+#SBATCH --gres=gpu:l40s:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=48G
 #SBATCH --time=06:00:00
-# NOTE: you may need to add a partition/account line for your ICE allocation, e.g.
-#   #SBATCH --partition=ice-gpu
-# Check with 'sinfo' what partitions you can use; see runbook step 5.
+# GPU choice: l40s is fast + has 48GB (plenty for LoRA on an 86M model).
+# If l40s nodes are busy and the job sits pending, swap the --gres line for a
+# generic request:   #SBATCH --gres=gpu:1
+# or another type seen in `sinfo`, e.g. gpu:a100:1 / gpu:v100:1.
 
 set -euo pipefail
 mkdir -p logs
