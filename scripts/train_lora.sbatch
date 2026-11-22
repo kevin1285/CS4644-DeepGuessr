@@ -29,7 +29,6 @@ cd "$SLURM_SUBMIT_DIR"
 
 python deepguessr/src/train_lora.py \
     --labels smooth --tau 75 \
-    --epochs 3 \
     --train-images 100000
 
 echo "Done. Results in deepguessr/results/ (lora_geocell_*.json, *_preds.csv, *_curve.csv)"

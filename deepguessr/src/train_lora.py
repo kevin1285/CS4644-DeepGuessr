@@ -136,10 +136,13 @@ def warm_start_head(model, data_dir, arch, labels, tau):
         print(f"No cached frozen head at {head_path}; head starts random-init.")
         return False
     sd = torch.load(head_path, map_location="cpu")
-    # Frozen linear head stores keys as 'fc.weight'/'fc.bias'; our linear head
-    # is a bare nn.Linear with 'weight'/'bias'. Strip the 'fc.' prefix.
+    # Remap frozen head keys to this model's bare head module:
+    #  - frozen linear head: 'fc.weight'/'fc.bias'  -> 'weight'/'bias'
+    #  - frozen mlp head:     'net.0.*'/'net.2.*'    -> '0.*'/'2.*'
     if arch == "linear":
         sd = {k.replace("fc.", ""): v for k, v in sd.items()}
+    else:
+        sd = {k.replace("net.", ""): v for k, v in sd.items()}
     try:
         model.head.load_state_dict(sd)
         print(f"Warm-started {arch} head from {head_path}")

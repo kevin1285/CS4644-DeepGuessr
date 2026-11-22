@@ -79,7 +79,7 @@ lora:
   head_hidden: 1024
   warm_start: true           # load the frozen head weights if available
   train_images: 100000        # scale to fit the time budget (handoff: 100k-200k)
-  epochs: 3
+  epochs: 8
   batch_size: 128
   grad_accum: 1
   lr_lora: 1.0e-4            # encoder LoRA params
