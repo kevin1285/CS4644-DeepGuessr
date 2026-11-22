@@ -68,3 +68,19 @@ geocell_head:
   batch_size: 1024
   epochs: 30
   tau_km: 75                  # smoothing temperature for smoothed labels
+
+lora:
+  hf_vision_model: openai/clip-vit-base-patch16  # WithProjection: 512-d, matches open_clip
+  rank: 16
+  alpha: 32
+  dropout: 0.1
+  target_modules: [q_proj, v_proj]
+  train_images: 100000        # scale to fit the time budget (handoff: 100k-200k)
+  epochs: 3
+  batch_size: 128
+  grad_accum: 1
+  lr_lora: 1.0e-4            # encoder LoRA params
+  lr_head: 1.0e-3            # geocell head
+  weight_decay: 0.01
+  labels: smooth             # onehot | smooth
+  num_workers: 8
