@@ -122,6 +122,16 @@ def count_trainable(model):
     return t, tot
 
 
+def _is_trainable_key(model, key):
+    """True if the state_dict key corresponds to a trainable parameter
+    (LoRA adapters + head), used to checkpoint only the small trainable set."""
+    if not hasattr(model, "_trainable_keys"):
+        model._trainable_keys = {
+            n for n, p in model.named_parameters() if p.requires_grad
+        }
+    return key in model._trainable_keys
+
+
 def warm_start_head(model, data_dir, arch, labels, tau):
     """Load the best frozen geocell head weights into the LoRA model's head.
 
@@ -262,12 +272,10 @@ def main() -> None:
 
     if args.resume and Path(args.resume).exists():
         ck = torch.load(args.resume, map_location=device)
-        model.load_state_dict(ck["model"])
-        opt.load_state_dict(ck["opt"])
-        sched.load_state_dict(ck["sched"])
+        model.load_state_dict(ck["trainable"], strict=False)
         start_epoch = ck["epoch"] + 1
         best_med = ck.get("best_med", float("inf"))
-        best_state = ck.get("best_state")
+        best_state = ck.get("trainable")
         log = ck.get("log", [])
         print(f"Resumed from {args.resume} at epoch {start_epoch}")
 
@@ -323,16 +331,21 @@ def main() -> None:
               f"val_median_km={va_med:.1f} throughput={img_per_s:.1f} img/s")
         if va_med < best_med:
             best_med = va_med
+            # Keep only trainable params (LoRA adapters + head), ~6.5M not 310M.
             best_state = {k: v.detach().cpu().clone()
-                          for k, v in model.state_dict().items()}
+                          for k, v in model.state_dict().items()
+                          if _is_trainable_key(model, k)}
 
-        torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
-                    "sched": sched.state_dict(), "epoch": ep,
-                    "best_med": best_med, "best_state": best_state,
-                    "log": log}, ckpt_path)
+        # Lightweight checkpoint: trainable params only, best-effort (don't let a
+        # disk hiccup kill a run whose epoch already succeeded).
+        try:
+            torch.save({"trainable": best_state, "epoch": ep,
+                        "best_med": best_med, "log": log}, ckpt_path)
+        except Exception as e:
+            print(f"[warn] checkpoint save failed ({e}); continuing without it.")
 
     if best_state is not None:
-        model.load_state_dict(best_state)
+        model.load_state_dict(best_state, strict=False)
 
     # Test.
     pred, plat, plon, _ = eval_loader(te_loader, test)
