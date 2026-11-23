@@ -23,7 +23,7 @@ download:
   # Final (ICE) scale. Each shard ~2.5 GB zipped; 4 shards ~ 200k raw images.
   train_shards: [0, 1, 2, 3]  # ~10 GB zips -> re-unzip in scratch
   test_shards: [0]            # one test shard (~2.25 GB)
-  target_train_images: 100000 # cap after unzip (seeded sample)
+  target_train_images: 200000 # use all downloaded images
   test_subset_size: 10000     # fixed seeded test subset used by EVERY model
   delete_zip_after_unzip: true  # save scratch space at scale
 
@@ -31,10 +31,10 @@ subsets:
   val_frac: 0.05              # val = 5% of downloaded train (seeded)
 
 clip:
-  model: ViT-B-16-quickgelu   # quickgelu matches OpenAI pretrained weights
+  model: ViT-L-14-quickgelu   # upgraded backbone; quickgelu matches OpenAI weights
   pretrained: openai
   image_size: 224
-  batch_size: 128
+  batch_size: 64
   num_workers: 4
 
 regression:
@@ -57,9 +57,9 @@ metrics:
 
 geocells:
   tag: default
-  max_per_cell: 500
-  min_per_cell: 30
-  min_cell_side: 0.5          # degrees; stop splitting below this
+  max_per_cell: 150           # finer cells (more K) -> better fine-scale accuracy
+  min_per_cell: 20
+  min_cell_side: 0.25         # degrees; allow smaller cells in dense regions
 
 geocell_head:
   arch: linear                # linear | mlp
@@ -71,18 +71,18 @@ geocell_head:
   tau_km: 75                  # smoothing temperature for smoothed labels
 
 lora:
-  hf_vision_model: openai/clip-vit-base-patch16  # WithProjection: 512-d, matches open_clip
-  rank: 16
-  alpha: 32
+  hf_vision_model: openai/clip-vit-large-patch14  # WithProjection: 768-d, matches open_clip L/14
+  rank: 32
+  alpha: 64
   dropout: 0.1
   target_modules: [q_proj, v_proj]
   head_arch: mlp             # mlp | linear  (match the best frozen head)
   head_hidden: 1024
   warm_start: true           # load the frozen head weights if available
-  train_images: 100000        # scale to fit the time budget (handoff: 100k-200k)
-  epochs: 8
-  batch_size: 128
-  grad_accum: 1
+  train_images: 200000        # use all downloaded images
+  epochs: 10
+  batch_size: 64             # L/14 is ~300M params; smaller batch for memory
+  grad_accum: 2              # effective batch 128
   lr_lora: 1.0e-4            # encoder LoRA params
   lr_head: 1.0e-3            # geocell head
   weight_decay: 0.01

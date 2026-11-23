@@ -1,0 +1,202 @@
+{
+  "run_name": "zeroshot_single",
+  "metrics": {
+    "n": 10000,
+    "median_km": 1903.225849381829,
+    "mean_km": 4050.9544932669414,
+    "acc@25km": 0.0035,
+    "acc@200km": 0.0531,
+    "acc@750km": 0.246,
+    "acc@2500km": 0.582,
+    "country_acc": 0.2797
+  },
+  "seed": 42,
+  "git_hash": "bad1b54e19533da90c3cea3d54cfdb0d65545343",
+  "clip": {
+    "model": "ViT-B-16-quickgelu",
+    "pretrained": "openai",
+    "image_size": 224,
+    "batch_size": 128,
+    "num_workers": 4
+  },
+  "per_continent": {
+    "Africa": {
+      "n": 1707,
+      "median_km": 1967.729208633941,
+      "country_acc": 0.1611013473930873
+    },
+    "Asia": {
+      "n": 2230,
+      "median_km": 2284.4469749660716,
+      "country_acc": 0.22376681614349775
+    },
+    "Europe": {
+      "n": 2037,
+      "median_km": 1055.8879498978467,
+      "country_acc": 0.20667648502700048
+    },
+    "North America": {
+      "n": 2062,
+      "median_km": 2180.980547569207,
+      "country_acc": 0.453443258971872
+    },
+    "Oceania": {
+      "n": 827,
+      "median_km": 1261.6621286691022,
+      "country_acc": 0.7073760580411125
+    },
+    "South America": {
+      "n": 1136,
+      "median_km": 6661.6596282199025,
+      "country_acc": 0.0721830985915493
+    },
+    "Unknown": {
+      "n": 1,
+      "median_km": 1958.1734090279533,
+      "country_acc": 0.0
+    }
+  },
+  "top20_confusions": [
+    [
+      [
+        "RU",
+        "FI"
+      ],
+      171
+    ],
+    [
+      [
+        "US",
+        "CA"
+      ],
+      149
+    ],
+    [
+      [
+        "US",
+        "XK"
+      ],
+      148
+    ],
+    [
+      [
+        "BR",
+        "PY"
+      ],
+      107
+    ],
+    [
+      [
+        "RU",
+        "KZ"
+      ],
+      72
+    ],
+    [
+      [
+        "US",
+        "GE"
+      ],
+      70
+    ],
+    [
+      [
+        "KZ",
+        "TM"
+      ],
+      52
+    ],
+    [
+      [
+        "SE",
+        "FI"
+      ],
+      50
+    ],
+    [
+      [
+        "RU",
+        "AX"
+      ],
+      46
+    ],
+    [
+      [
+        "CD",
+        "GW"
+      ],
+      43
+    ],
+    [
+      [
+        "RU",
+        "CA"
+      ],
+      43
+    ],
+    [
+      [
+        "BR",
+        "MZ"
+      ],
+      42
+    ],
+    [
+      [
+        "RU",
+        "BY"
+      ],
+      40
+    ],
+    [
+      [
+        "CA",
+        "US"
+      ],
+      38
+    ],
+    [
+      [
+        "RU",
+        "MD"
+      ],
+      35
+    ],
+    [
+      [
+        "CA",
+        "XK"
+      ],
+      35
+    ],
+    [
+      [
+        "BR",
+        "GF"
+      ],
+      33
+    ],
+    [
+      [
+        "RU",
+        "XK"
+      ],
+      32
+    ],
+    [
+      [
+        "AR",
+        "PY"
+      ],
+      31
+    ],
+    [
+      [
+        "MX",
+        "XK"
+      ],
+      30
+    ]
+  ],
+  "n_candidate_countries": 200
+}
