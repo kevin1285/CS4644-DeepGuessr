@@ -1,13 +1,13 @@
 | Method | Median km ↓ | 25 km ↑ | 200 km ↑ | 750 km ↑ | 2500 km ↑ | Country acc ↑ |
 |---|---|---|---|---|---|---|
-| Train-mean (sanity) | 6890 | 0.0 | 0.0 | 0.7 | 7.4 | 0.6 |
-| Common-country (sanity) | 9069 | 0.0 | 0.1 | 2.9 | 16.6 | 11.9 |
-| Zero-shot CLIP (single) | 1934 | 0.2 | 5.2 | 23.8 | 57.5 | 29.6 |
-| Zero-shot CLIP (ensemble) | 1763 | **0.2** | 5.3 | 25.2 | 60.2 | 30.5 |
-| Regression (linear) | 2700 | 0.0 | 0.9 | 11.7 | 47.4 | 22.0 |
-| Regression (MLP) | 1990 | 0.1 | 2.1 | 20.6 | 57.0 | 29.2 |
-| Geocell linear (one-hot) | 2273 | 0.1 | 2.7 | 21.3 | 52.6 | 25.2 |
-| Geocell linear (smooth tau=75) | 2320 | 0.1 | 2.7 | 21.8 | 52.1 | 25.4 |
-| Geocell MLP (one-hot) | 1412 | 0.1 | 4.5 | 31.7 | 64.7 | 36.2 |
-| Geocell MLP (smooth tau=75) | 1391 | 0.1 | 4.9 | 32.3 | 65.1 | 36.3 |
-| LoRA geocell MLP (smooth tau=75) | **1220** | 0.0 | **5.4** | **34.9** | **68.2** | **38.9** |
+| Train-mean (sanity) | 6869 | 0.0 | 0.1 | 0.6 | 8.8 | 0.5 |
+| Common-country (sanity) | 9052 | 0.0 | 0.2 | 2.6 | 15.7 | 11.6 |
+| Zero-shot CLIP (single) | 1903 | 0.4 | 5.3 | 24.6 | 58.2 | 28.0 |
+| Zero-shot CLIP (ensemble) | 1727 | 0.4 | 5.6 | 25.9 | 60.8 | 29.1 |
+| Regression (linear) | 2500 | 0.0 | 1.3 | 13.6 | 50.0 | 23.2 |
+| Regression (MLP) | 1585 | 0.0 | 4.3 | 28.5 | 63.2 | 33.0 |
+| Geocell linear (one-hot) | 1452 | 0.3 | 8.7 | 32.6 | 61.7 | 35.2 |
+| Geocell linear (smooth tau=75) | 1404 | 0.3 | 9.7 | 33.4 | 62.8 | 36.1 |
+| Geocell MLP (one-hot) | 1023 | 0.4 | 14.5 | 42.6 | 69.6 | 44.1 |
+| Geocell MLP (smooth tau=75) | 976 | 0.4 | 15.1 | 43.6 | 70.6 | 45.1 |
+| LoRA geocell MLP (smooth tau=75) | **811** | **0.5** | **18.1** | **48.3** | **74.3** | **49.4** |

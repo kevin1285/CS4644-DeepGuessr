@@ -1,17 +1,17 @@
 {
   "run_name": "regression_mlp",
   "metrics": {
-    "n": 5000,
-    "median_km": 1989.5762021933674,
-    "mean_km": 3484.4671299502274,
-    "acc@25km": 0.0006,
-    "acc@200km": 0.0208,
-    "acc@750km": 0.206,
-    "acc@2500km": 0.5696,
-    "country_acc": 0.2924
+    "n": 10000,
+    "median_km": 1584.815715017846,
+    "mean_km": 3119.2950243656924,
+    "acc@25km": 0.0003,
+    "acc@200km": 0.0426,
+    "acc@750km": 0.2849,
+    "acc@2500km": 0.6321,
+    "country_acc": 0.3298
   },
   "seed": 42,
-  "git_hash": "bf08a825f6e02e6387b858d55b2386dbafa9e9d0",
+  "git_hash": "bad1b54e19533da90c3cea3d54cfdb0d65545343",
   "clip": {
     "model": "ViT-B-16-quickgelu",
     "pretrained": "openai",
@@ -21,34 +21,39 @@
   },
   "per_continent": {
     "Africa": {
-      "n": 862,
-      "median_km": 3785.9756767951603,
-      "country_acc": 0.03248259860788863
+      "n": 1707,
+      "median_km": 2665.9510946782666,
+      "country_acc": 0.06854130052724078
     },
     "Asia": {
-      "n": 1112,
-      "median_km": 2125.7761454886795,
-      "country_acc": 0.15827338129496402
+      "n": 2230,
+      "median_km": 1864.6022136941324,
+      "country_acc": 0.23094170403587444
     },
     "Europe": {
-      "n": 954,
-      "median_km": 1035.3003615569705,
-      "country_acc": 0.2830188679245283
+      "n": 2037,
+      "median_km": 803.9963330062155,
+      "country_acc": 0.3269513991163476
     },
     "North America": {
-      "n": 1084,
-      "median_km": 1119.6699115026418,
-      "country_acc": 0.551660516605166
+      "n": 2062,
+      "median_km": 940.418527170691,
+      "country_acc": 0.569835111542192
     },
     "Oceania": {
-      "n": 421,
-      "median_km": 1871.636480303953,
-      "country_acc": 0.6555819477434679
+      "n": 827,
+      "median_km": 1405.0214342742995,
+      "country_acc": 0.6444981862152358
     },
     "South America": {
-      "n": 567,
-      "median_km": 5120.215729005334,
-      "country_acc": 0.20105820105820105
+      "n": 1136,
+      "median_km": 3866.0669487007076,
+      "country_acc": 0.25704225352112675
+    },
+    "Unknown": {
+      "n": 1,
+      "median_km": 5000.406153004121,
+      "country_acc": 0.0
     }
   },
   "selected_on_val": true,

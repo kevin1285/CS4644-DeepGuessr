@@ -1,29 +1,29 @@
 ## Per-continent median km (↓)
 
-| Method | Africa | Asia | Europe | North America | Oceania | South America |
-|---|---|---|---|---|---|---|
-| Train-mean (sanity) | 8102 | 8203 | 2863 | 5726 | 15683 | 9769 |
-| Zero-shot CLIP (single) | 2273 | 2038 | 1097 | 2088 | 1307 | 7790 |
-| Zero-shot CLIP (ensemble) | 2253 | 1732 | 1040 | 1793 | 1314 | 5300 |
-| Regression (linear) | 3748 | 2965 | 1442 | 1727 | 2557 | 6376 |
-| Regression (MLP) | 3786 | 2126 | 1035 | 1120 | 1872 | 5120 |
-| Geocell linear (one-hot) | 7378 | 2028 | 1312 | 1096 | 1796 | 8275 |
-| Geocell linear (smooth tau=75) | 7302 | 1948 | 1339 | 1113 | 1928 | 10004 |
-| Geocell MLP (one-hot) | 3005 | 1674 | 861 | 801 | 1598 | 4965 |
-| Geocell MLP (smooth tau=75) | 2822 | 1594 | 835 | 810 | 1531 | 4895 |
-| LoRA geocell MLP (smooth tau=75) | 2249 | 1511 | 811 | 775 | 1376 | 2896 |
+| Method | Africa | Asia | Europe | North America | Oceania | South America | Unknown |
+|---|---|---|---|---|---|---|---|
+| Train-mean (sanity) | 7945 | 8112 | 2687 | 5892 | 15746 | 9791 | 2939 |
+| Zero-shot CLIP (single) | 1968 | 2284 | 1056 | 2181 | 1262 | 6662 | 1958 |
+| Zero-shot CLIP (ensemble) | 1990 | 1822 | 1031 | 1923 | 1276 | 4131 | 1958 |
+| Regression (linear) | 3703 | 2779 | 1230 | 1643 | 2388 | 6076 | 3064 |
+| Regression (MLP) | 2666 | 1865 | 804 | 940 | 1405 | 3866 | 5000 |
+| Geocell linear (one-hot) | 3358 | 1704 | 856 | 839 | 1659 | 7063 | 10201 |
+| Geocell linear (smooth tau=75) | 2738 | 1631 | 859 | 843 | 1418 | 6952 | 10142 |
+| Geocell MLP (one-hot) | 1754 | 1221 | 633 | 634 | 1210 | 2570 | 10201 |
+| Geocell MLP (smooth tau=75) | 1663 | 1156 | 607 | 637 | 1167 | 2402 | 10201 |
+| LoRA geocell MLP (smooth tau=75) | 1402 | 983 | 469 | 531 | 1014 | 1412 | 1138 |
 
 ## Per-continent country accuracy (↑)
 
-| Method | Africa | Asia | Europe | North America | Oceania | South America |
-|---|---|---|---|---|---|---|
-| Train-mean (sanity) | 0.0 | 0.0 | 3.4 | 0.0 | 0.0 | 0.0 |
-| Zero-shot CLIP (single) | 17.9 | 21.9 | 23.4 | 46.7 | 75.8 | 5.8 |
-| Zero-shot CLIP (ensemble) | 15.8 | 24.4 | 23.6 | 50.6 | 74.8 | 5.5 |
-| Regression (linear) | 3.2 | 9.5 | 17.9 | 47.6 | 55.8 | 8.1 |
-| Regression (MLP) | 3.2 | 15.8 | 28.3 | 55.2 | 65.6 | 20.1 |
-| Geocell linear (one-hot) | 5.5 | 12.9 | 11.7 | 50.4 | 67.0 | 22.8 |
-| Geocell linear (smooth tau=75) | 6.1 | 13.0 | 14.7 | 51.8 | 68.6 | 14.3 |
-| Geocell MLP (one-hot) | 9.5 | 26.8 | 32.8 | 60.9 | 71.7 | 27.2 |
-| Geocell MLP (smooth tau=75) | 10.0 | 25.0 | 34.8 | 60.8 | 72.4 | 27.0 |
-| LoRA geocell MLP (smooth tau=75) | 10.4 | 29.2 | 34.9 | 63.9 | 73.9 | 34.2 |
+| Method | Africa | Asia | Europe | North America | Oceania | South America | Unknown |
+|---|---|---|---|---|---|---|---|
+| Train-mean (sanity) | 0.0 | 0.0 | 2.4 | 0.0 | 0.0 | 0.0 | 0.0 |
+| Zero-shot CLIP (single) | 16.1 | 22.4 | 20.7 | 45.3 | 70.7 | 7.2 | 0.0 |
+| Zero-shot CLIP (ensemble) | 15.3 | 25.3 | 20.8 | 48.7 | 69.9 | 7.0 | 0.0 |
+| Regression (linear) | 2.1 | 12.3 | 22.0 | 49.6 | 53.2 | 8.5 | 0.0 |
+| Regression (MLP) | 6.9 | 23.1 | 32.7 | 57.0 | 64.4 | 25.7 | 0.0 |
+| Geocell linear (one-hot) | 12.5 | 27.0 | 34.2 | 59.5 | 67.5 | 19.5 | 0.0 |
+| Geocell linear (smooth tau=75) | 13.2 | 26.6 | 35.2 | 61.3 | 68.6 | 20.9 | 0.0 |
+| Geocell MLP (one-hot) | 23.4 | 33.9 | 48.8 | 63.8 | 67.7 | 33.5 | 0.0 |
+| Geocell MLP (smooth tau=75) | 24.4 | 35.5 | 49.5 | 65.0 | 68.6 | 33.8 | 0.0 |
+| LoRA geocell MLP (smooth tau=75) | 28.2 | 39.3 | 54.6 | 68.2 | 70.9 | 41.7 | 0.0 |
