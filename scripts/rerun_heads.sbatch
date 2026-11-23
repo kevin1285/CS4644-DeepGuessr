@@ -3,7 +3,7 @@
 #SBATCH --output=logs/dg_heads_%j.out
 #SBATCH --error=logs/dg_heads_%j.err
 #SBATCH --partition=ice-gpu
-#SBATCH --gres=gpu:l40s:1
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=02:00:00
