@@ -15,3 +15,4 @@ deepguessr/data/
 
 # large training checkpoints (not committed)
 deepguessr/results/*_ckpt.pt
+deepguessr/results/
