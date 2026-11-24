@@ -1,0 +1,17 @@
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Median km $\downarrow$ & 25 km $\uparrow$ & 200 km $\uparrow$ & 750 km $\uparrow$ & 2500 km $\uparrow$ & Country acc $\uparrow$ \\
+\midrule
+Train-mean (sanity) & 6868 & 0.0 & 0.1 & 0.8 & 8.8 & 0.7 \\
+Common-country (sanity) & 8962 & 0.0 & 0.2 & 2.7 & 16.4 & 11.7 \\
+Zero-shot CLIP (single) & 1237 & 0.5 & 8.6 & 34.9 & 70.8 & 39.2 \\
+Zero-shot CLIP (ensemble) & 1209 & 0.6 & 8.5 & 35.1 & 72.5 & 40.8 \\
+Regression (linear) & 1679 & 0.0 & 2.7 & 23.5 & 64.2 & 32.8 \\
+Regression (MLP) & 904 & 0.2 & 9.4 & 44.4 & 77.3 & 45.6 \\
+Geocell linear (one-hot) & 793 & 1.7 & 19.0 & 48.4 & 76.2 & 54.2 \\
+Geocell linear (smooth tau=75) & 714 & 1.8 & 21.9 & 51.3 & 77.3 & 54.9 \\
+Geocell MLP (one-hot) & 524 & 3.2 & 28.9 & 57.8 & 80.8 & 59.4 \\
+Geocell MLP (smooth tau=75) & 479 & 2.7 & 30.0 & 59.8 & 81.8 & 61.5 \\
+LoRA geocell MLP (smooth tau=75) & \textbf{340} & \textbf{3.9} & \textbf{37.2} & \textbf{66.6} & \textbf{84.9} & \textbf{66.0} \\
+\bottomrule
+\end{tabular}
