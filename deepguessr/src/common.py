@@ -39,9 +39,18 @@ def set_seed(seed: int) -> None:
 
 
 def get_device(requested: str = "mps") -> str:
+    import os
+
     import torch
 
+    # Explicit env override (e.g. DG_DEVICE=cpu for the CPU-partition job).
+    env = os.environ.get("DG_DEVICE")
+    if env:
+        requested = env
+
     # Honor the explicit request if that device is actually available.
+    if requested == "cpu":
+        return "cpu"
     if requested == "cuda" and torch.cuda.is_available():
         return "cuda"
     if requested == "mps" and torch.backends.mps.is_available():
